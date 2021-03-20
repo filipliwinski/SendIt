@@ -1,0 +1,37 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-2019'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+
+    - task: UseDotNet@2 
+      displayName: "Use .NET Core 3.1.x"
+      inputs:
+        version: '3.1.x'
+        packageType: sdk
+
+    - task: DotNetCoreCLI@2
+      displayName: "Build for $(buildConfiguration)"
+      inputs:
+        command: 'build'
+        projects: '**/SendIt.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+
+    - task: CopyFiles@2
+      displayName: "Copy files to $(Build.ArtifactStagingDirectory)"
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)'
+        contents: '**/bin/$(buildConfiguration)/**/?(*.exe|*.dll|*.pdb|*.nupkg)'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+        flattenFolders: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Artifacts"
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'SendIt'
