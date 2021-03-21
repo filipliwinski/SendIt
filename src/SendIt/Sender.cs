@@ -29,6 +29,9 @@ using System.Threading.Tasks;
 
 namespace SendIt
 {
+    /// <summary>
+    /// Allows to send e-mail messages using Simple Mail Transfer Protocol with support for message queuing.
+    /// </summary>
     public class Sender : ISender
     {
         private readonly string testMessage;
@@ -42,27 +45,72 @@ namespace SendIt
         private uint groupTimeGap = 0;
         private DateTime lastSent;
 
+        /// <summary>
+        /// Specify whether the System.Net.Mail.SmtpClient uses Secure Sockets Layer (SSL) to encrypt the connection.
+        /// </summary>
         public bool UseSSL { get; private set; }
+
+        /// <summary>
+        /// Text included in every message sent in test mode.
+        /// </summary>
+        public string TestMessage { get { return testMessage; } }
+
+        /// <summary>
+        /// Determines whether test mode is enabled. In test mode, all messages are sent to the defined test recipients, 
+        /// and each message is accompanied by a header with the string defined in the TestMessage property. 
+        /// </summary>
         public bool TestMode { get { return testMode; } }
+
+        /// <summary>
+        ///  Determines whether the dry run mode is enabled. In dry run mode, no message is sent.
+        /// </summary>
         public bool DryRun { get { return dryRun; } }
+
+        /// <summary>
+        /// Date of the last message sent (exactly the moment just before it was sent).
+        /// </summary>
         public DateTime LastSent { get { return lastSent; } }
+
+        /// <summary>
+        /// Configuration of the System.Net.Mail.SmtpClient.
+        /// </summary>
         public SmtpConfig SmtpConfig { get; private set; }
+
+        /// <summary>
+        /// Number of messages to be sent in one group.
+        /// </summary>
         public uint GroupSize
         {
             get { return groupSize; }
             set { groupSize = value; }
         }
+
+        /// <summary>
+        /// Time gap between message groups.
+        /// </summary>
         public uint GroupTimeGap
         {
             get { return groupTimeGap; }
             set { groupTimeGap = value; }
         }
+
+        /// <summary>
+        /// Time gap between messages in a message group.
+        /// </summary>
         public uint IndividualTimeGap
         {
             get { return individualTimeGap; }
             set { individualTimeGap = value; }
         }
 
+        /// <summary>
+        /// Creates a new instance of the SendIt.Sender class.
+        /// </summary>
+        /// <param name="testRecipients">Recipients to be used in test mode.</param>
+        /// <param name="testMode">Determines whether test mode is enabled.</param>
+        /// <param name="dryRun">Determines whether dry run mode is enabled.</param>
+        /// <param name="useSSL">Specify whether the System.Net.Mail.SmtpClient uses Secure Sockets Layer (SSL) to encrypt the connection.</param>
+        /// <param name="testMessage">Text included in every message sent in test mode.</param>
         public Sender(Recipient[] testRecipients, bool testMode = true, bool dryRun = false, bool useSSL = true, string testMessage = "TEST MESSAGE")
         {
             this.dryRun = dryRun;
