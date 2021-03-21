@@ -10,7 +10,7 @@
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/filipliwinski/SendIt</PackageProjectUrl>
     <PackageTags>sendit, sender, email, smtp</PackageTags>
-    <Description>Package for sending mass e-mails via SMTP.</Description>
+    <Description>Package for sending e-mails via SMTP.</Description>
   </PropertyGroup>
 
   <ItemGroup>
