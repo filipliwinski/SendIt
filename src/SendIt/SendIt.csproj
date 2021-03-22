@@ -1,16 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <AssemblyName>SendIt</AssemblyName>
     <Authors>Filip Liwiński</Authors>
     <Company>Filip Liwiński</Company>
     <Copyright>Filip Liwiński</Copyright>
+    <Description>Package for sending e-mails via SMTP.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/filipliwinski/SendIt</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>sendit, sender, email, smtp</PackageTags>
-    <Description>Package for sending e-mails via SMTP.</Description>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

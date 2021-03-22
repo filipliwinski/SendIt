@@ -1,4 +1,4 @@
-﻿// MIT License
+// MIT License
 //  
 //  Copyright (c) 2021 Filip Liwiński
 //  
@@ -38,6 +38,8 @@ namespace SendIt
         private readonly Recipient[] testRecipients;
         private readonly bool testMode;
         private readonly bool dryRun;
+        private readonly string mailHeader;
+        private readonly string mailFooter;
 
         private uint groupIndex = 0;
         private uint groupSize = 0;
@@ -110,10 +112,14 @@ namespace SendIt
         /// <param name="testMode">Determines whether test mode is enabled.</param>
         /// <param name="dryRun">Determines whether dry run mode is enabled.</param>
         /// <param name="useSSL">Specify whether the System.Net.Mail.SmtpClient uses Secure Sockets Layer (SSL) to encrypt the connection.</param>
+        /// <param name="mailHeader">Text included at the begining of each e-mail message.</param>
+        /// <param name="mailFooter">Text included at the end of each e-mail message.</param>
         /// <param name="testMessage">Text included in every message sent in test mode.</param>
-        public Sender(Recipient[] testRecipients, bool testMode = true, bool dryRun = false, bool useSSL = true, string testMessage = "TEST MESSAGE")
+        public Sender(Recipient[] testRecipients, bool testMode = true, bool dryRun = false, bool useSSL = true, string mailHeader = "", string mailFooter = "", string testMessage = "TEST MESSAGE")
         {
             this.dryRun = dryRun;
+            this.mailHeader = mailHeader;
+            this.mailFooter = mailFooter;
             this.testRecipients = testRecipients;
             this.testMessage = $"* * * {testMessage} * * *";
             this.testMode = testMode;
