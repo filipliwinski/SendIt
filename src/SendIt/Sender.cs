@@ -42,9 +42,6 @@ namespace SendIt
         private readonly string mailFooter;
 
         private uint groupIndex = 0;
-        private uint groupSize = 0;
-        private uint individualTimeGap = 0;
-        private uint groupTimeGap = 0;
         private DateTime lastSent;
 
         /// <summary>
@@ -81,29 +78,17 @@ namespace SendIt
         /// <summary>
         /// Number of messages to be sent in one group.
         /// </summary>
-        public uint GroupSize
-        {
-            get { return groupSize; }
-            set { groupSize = value; }
-        }
+        public uint GroupSize { get; set; } = 0;
 
         /// <summary>
         /// Time gap between message groups.
         /// </summary>
-        public uint GroupTimeGap
-        {
-            get { return groupTimeGap; }
-            set { groupTimeGap = value; }
-        }
+        public uint GroupTimeGap { get; set; } = 0;
 
         /// <summary>
         /// Time gap between messages in a message group.
         /// </summary>
-        public uint IndividualTimeGap
-        {
-            get { return individualTimeGap; }
-            set { individualTimeGap = value; }
-        }
+        public uint IndividualTimeGap { get; set; } = 0;
 
         /// <summary>
         /// Creates a new instance of the SendIt.Sender class.
@@ -133,15 +118,17 @@ namespace SendIt
 
         private MailMessage Compose(Recipient[] recipients, string subject, string content, IEmailable[] sections, Attachment[] attachments, bool isHtml, Encoding encoding)
         {
+            var contentBuilder = new StringBuilder(content);
+
             if (testMode)
             {
                 if (isHtml)
                 {
-                    content = $"<p style=\"color: red\">{testMessage}</p><br />" + content;
+                    contentBuilder.Insert(0, $"<p style=\"color: red\">{testMessage}</p><br />");
                 }
                 else
                 {
-                    content = $"{testMessage}\n\r" + content;
+                    contentBuilder.Insert(0, $"{testMessage}\n\r");
                 }
             }
 
@@ -151,11 +138,11 @@ namespace SendIt
                 {
                     if (isHtml)
                     {
-                        content += sections[i].ToHtml();
+                        contentBuilder.Append(sections[i].ToHtml());
                     }
                     else
                     {
-                        content += sections[i].ToText();
+                        contentBuilder.Append(sections[i].ToText());
                     }
                 }
             }
@@ -185,8 +172,6 @@ namespace SendIt
                     case RecipientType.ReplyTo:
                         message.ReplyToList.Add(recipients[i].ToString());
                         break;
-                    default:
-                        throw new Exception($"Unsupported recipient type: {recipients[i].Type}");
                 }
             }
 
@@ -203,7 +188,7 @@ namespace SendIt
 
         public async Task<string> SendMailAsync(Recipient[] recipients, string subject, string content = "", IEmailable[] sections = null, Attachment[] attachments = null, bool isHtml = true, Encoding encoding = null)
         {
-            var log = "";
+            var log = new StringBuilder();
             uint timeGap = 0;
 
             if (TestMode)
@@ -213,14 +198,14 @@ namespace SendIt
 
             using (var message = Compose(recipients, subject, content, sections, attachments, isHtml, encoding))
             {
-                if (groupIndex == groupSize)
+                if (groupIndex == GroupSize)
                 {
                     groupIndex = 0;
-                    timeGap = GetTimeGap(groupTimeGap);
+                    timeGap = GetTimeGap(GroupTimeGap);
                 }
                 else
                 {
-                    timeGap = GetTimeGap(individualTimeGap);
+                    timeGap = GetTimeGap(IndividualTimeGap);
                 }
 
                 Thread.Sleep((int)timeGap);
@@ -229,7 +214,7 @@ namespace SendIt
 
                 if (DryRun)
                 {
-                    log += "[DRY RUN] ";
+                    log.Append("[DRY RUN] ");
                 }
                 else
                 {
@@ -237,20 +222,20 @@ namespace SendIt
                 }
                 groupIndex++;
 
-                log += "Notification sent: ";
+                log.Append("Notification sent: ");
 
                 for (int i = 0; i < recipients.Length; i++)
                 {
-                    log += $"{recipients[i].Type}: {recipients[i].Email};";
+                    log.Append($"{recipients[i].Type}: {recipients[i].Email};");
                 }
 
                 if (timeGap > 0)
                 {
-                    log += $" [{timeGap}ms time gap]";
+                    log.Append($" [{timeGap}ms time gap]");
                 }
             }
 
-            return log;
+            return log.ToString();
         }
 
         private uint GetTimeGap(uint configuredDelay)
