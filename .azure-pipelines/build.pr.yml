@@ -1,7 +1,8 @@
-trigger:
-  - master
+trigger: none
 
-pr: none
+pr:
+- master
+- develop
 
 pool:
   vmImage: windows-2019
@@ -13,6 +14,6 @@ resources:
     name: GitHub.Public/YAML.Templates
 
 steps:
-  - template: build.ci.yml@templates
+  - template: build.pr.yml@templates
     parameters:
       projectName: SendIt

@@ -8,11 +8,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SendIt", "SendIt\SendIt.csproj", "{8D38F9DD-E364-4822-8126-D44266BB63EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF066A17-32BB-4ADC-B844-1DC1DC7B0196}"
-	ProjectSection(SolutionItems) = preProject
-		..\.editorconfig = ..\.editorconfig
-		..\.azure-pipelines\build.ci.yml = ..\.azure-pipelines\build.ci.yml
-		..\README.md = ..\README.md
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
