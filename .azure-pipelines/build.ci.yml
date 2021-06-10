@@ -16,3 +16,4 @@ steps:
   - template: build.ci.yml@templates
     parameters:
       projectName: SendIt
+      unitTestsProjectName: SendIt.Tests
