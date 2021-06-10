@@ -1,4 +1,4 @@
-﻿// MIT License
+// MIT License
 //  
 //  Copyright (c) 2021 Filip Liwiński
 //  
@@ -27,7 +27,7 @@ namespace SendIt
 {
     public static class EmailAdderssValidator
     {
-        public static readonly string RegexString = "^[a-z0-9-]+[a-z0-9._%+-]*@[a-z0-9]+[a-z0-9.-]*$";
+        public static readonly string RegexString = @"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
 
         public static bool IsValid(string email)
         {
