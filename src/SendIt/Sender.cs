@@ -21,6 +21,7 @@
 //  SOFTWARE.
 //
 
+using SendIt.HtmlBuilder;
 using System;
 using System.Net.Mail;
 using System.Text;
@@ -124,7 +125,10 @@ namespace SendIt
             {
                 if (isHtml)
                 {
-                    contentBuilder.Insert(0, $"<p style=\"color: red\">{testMessage}</p><br />");
+                    var paragraph = new P(testMessage);
+                    paragraph.Style.Add(StyleProperty.Color, "#FF0000");
+
+                    contentBuilder.Insert(0, paragraph.ToHtml());
                 }
                 else
                 {

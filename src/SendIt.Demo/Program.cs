@@ -1,4 +1,4 @@
-﻿// MIT License
+// MIT License
 //  
 //  Copyright (c) 2021 Filip Liwiński
 //  
@@ -21,22 +21,23 @@
 //  SOFTWARE.
 //
 
+using SendIt.HtmlBuilder;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace SendIt.Demo
 {
-    class Program
+    static class Program
     {
         static async Task Main(string[] args)
         {
             Console.WriteLine("Hello World!");
 
             // (Optional) Configure the SMTP account details (by default, the details configured in <mailSettings> in the config file are used).
-            var smtpConfig = new SmtpConfig("<smtp host address>", 587, new NetworkCredential("<username>", "<password>"), "<from e-mail address>");
+            var smtpConfig = new SmtpConfig("<smtp host address>", 587, new NetworkCredential("<username>", "<password>"), "sender@example.com");
 
-            Recipient[] testRecipients = { new Recipient("test@example.com") };
+            Recipient[] testRecipients = { new Recipient("test.recipient@example.com") };
 
             // Create the Sender object.
             var sender = new Sender(testRecipients, testMode: true, dryRun: true);
@@ -44,7 +45,7 @@ namespace SendIt.Demo
             // Configure the Sender object with custom SMTP account configuration.
             sender.Configure(smtpConfig);
 
-            Recipient[] recipients = { new Recipient("example@example.com") };
+            Recipient[] recipients = { new Recipient("real.recipient@example.com") };
 
             // Send two messages 10 times.
             for (int i = 0; i < 10; i++)
@@ -59,7 +60,7 @@ namespace SendIt.Demo
                 };
 
                 // Send an e-mail with content and IEmailable objects in HTML format.
-                Console.WriteLine(await sender.SendMailAsync(recipients, "Hello World!", "<h3>Sent in HTML format using SendIt.</h3>", exampleObjects));
+                Console.WriteLine(await sender.SendMailAsync(recipients, "Hello World!", new H3("Sent in HTML format using SendIt.").ToHtml(), exampleObjects));
             }
         }
     }
